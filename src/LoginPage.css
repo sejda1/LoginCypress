@@ -1,0 +1,117 @@
+/* Genel Stil Ayarları */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: black;
+    margin:1rem 1rem ;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+form {
+    background-color: #f5e1ec;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    width: 100%;
+    max-width: 400px;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+}
+
+legend {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    color: #88015d;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center;
+    font-size: 1.1em;
+    color: #5d0d39;
+}
+
+/* Label ve Input Stilleri */
+label {
+    font-size: 1em;
+    color: #540a2f;
+    margin-bottom: 10px;
+    display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #3d0335;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.error {
+    font-size: small;
+    color:#370f26;
+    background-color: #bd84ab;
+    text-align: left;
+}
+.checkbox {
+    display: flex;
+   align-items: center;
+}
+
+/* Buton Stilleri */
+button {
+    background-color: #bd84ab;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Error Styling for Inputs */
+input:invalid, textarea:invalid {
+    border: 1px solid #370f26;
+}
+
+input:valid, textarea:valid {
+    border: 1px solid #381122;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    form {
+        padding: 20px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
