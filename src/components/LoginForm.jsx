@@ -1,218 +1,224 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { Form, FormGroup, Label, Input} from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+const initialData = {
+  name: '',
+  surname: '',
+  email: '',
+  password: '',
+  phone: '',
+  message: '',
+  confirmation: false,
+  gender: '',
+};
 
 export default function LoginForm() {
-    const [formData, setFormData] = useState({
-        name: '',
-        surname: '',
-        email: '',
-        password: '',
-        phone: '',
-        message: '',
-        confirmation: false,
-        gender: false,
+  const [formData, setFormData] = useState(initialData);
+  const [errors, setErrors] = useState({});
+  const [isValidForm, setIsValidForm] = useState(false);
+  const navigate = useNavigate();
+
+  // Handle form data changes
+  const handleChange = (e) => {
+    const { name, value, checked, type } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
     });
+  };
 
-    const [errors, setErrors] = useState({});
-    const [isValidForm, setIsValidForm] = useState(false);
-    const navigate = useNavigate();
+  // Validate form data
+  const ValidateForm = () => {
+    const validationErrors = {};
 
-    const handleChange = (e) => {
-        const { name, type, value, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === 'checkbox' ? checked : value,
-        });
-    };
+    if (formData.name.length < 3) {
+      validationErrors.name = 'İsim en az 3 karakter olmalı.';
+    }
+    if (formData.surname.length < 2) {
+      validationErrors.surname = 'Soyisim en az 2 karakter olmalı.';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      validationErrors.email = 'Geçerli bir e-posta adresi giriniz.';
+    }
+    if (formData.password.length < 5) {
+      validationErrors.password = 'Şifreniz en az 5 karakter olmalı.';
+    }
+    if (!formData.phone.match(/[0-9]{3}-[0-9]{3}-[0-9]{4}/)) {
+      validationErrors.phone = 'Doğru formatta giriniz.';
+    }
+    if (!formData.confirmation) {
+      validationErrors.confirmation = 'Onay kutusunu işaretlemeniz gerekiyor.';
+    }
+    if (!formData.gender) {
+      validationErrors.gender = 'Cinsiyetinizi işaretleyiniz.';
+    }
 
-    const ValidateForm = () => {
-        const validationErrors = {};
+    setErrors(validationErrors);
+    setIsValidForm(Object.keys(validationErrors).length === 0);
+  };
 
-        if (formData.name.length < 3) {
-            validationErrors.name = 'İsim en az 3 karakter olmalı.';
-        }
-        if (formData.surname.length < 2) {
-            validationErrors.surname = 'Soyisim en az 2 karakter olmalı.';
-        }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            validationErrors.email = 'Geçerli bir e-posta adresi giriniz.';
-        }
-        if (formData.password.length < 5) {
-            validationErrors.password = 'Şifreniz en az 5 karakter olmalı.';
-        }
-        if (!formData.phone.match(/[0-9]{3}-[0-9]{3}-[0-9]{4}/)) {
-            validationErrors.phone = 'Örn: 555-555-5555';
-        }
-        if (!formData.confirmation) {
-            validationErrors.confirmation = 'Onay kutusunu işaretlemeniz gerekiyor.';
-        }
-        if (!formData.gender) {
-            validationErrors.gender = 'Cinsiyetinizi işaretleyiniz.';
-        }
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-        setErrors(validationErrors);
-        setIsValidForm(Object.keys(validationErrors).length === 0);
-    };
+    if (isValidForm) {
+      localStorage.setItem('formData', JSON.stringify(formData));
+      navigate('/go');
+      setFormData(initialData);
+      setErrors({});
+    }
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  // Validate form whenever formData changes
+  useEffect(() => {
+    ValidateForm();
+  }, [formData]);
 
-        if (isValidForm) {
-            localStorage.setItem('formData', JSON.stringify(formData));
-            navigate('/go');
-            setFormData({
-                name: '',
-                surname: '',
-                email: '',
-                password: '',
-                phone: '',
-                message: '',
-                confirmation: false,
-                gender: false,
-            });
-            setErrors({});
-        }
-    };
+  return (
+    <Form onSubmit={handleSubmit}>
+    <h1>KAYIT FORMU</h1>
+      <FormGroup>
+        <Label for="name">Adınız:</Label>
+        <Input
+          type="text"
+          name="name"
+          id="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          invalid={!!errors.name}
+        />
+        {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+      </FormGroup>
 
-    useEffect(() => {
-        ValidateForm();
-    }, [formData]);
+      <FormGroup>
+        <Label for="surname">Soyadınız:</Label>
+        <Input
+          type="text"
+          name="surname"
+          id="surname"
+          value={formData.surname}
+          onChange={handleChange}
+          required
+          invalid={!!errors.surname}
+        />
+        {errors.surname && <div className="invalid-feedback">{errors.surname}</div>}
+      </FormGroup>
 
+      <FormGroup>
+        <Label for="email">E-mail:</Label>
+        <Input
+          type="email"
+          name="email"
+          id="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder='test@example.com'
+          required
+          invalid={!!errors.email}
+        />
+        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+      </FormGroup>
 
-    return (
-        <>
-        <form onSubmit={handleSubmit}>
-            <fieldset>
-                <legend>Kullanıcı Giriş Formu</legend>
-                <p>Lütfen Bilgilerinizi Giriniz.</p>
-                <div>
-                    <label>Adınız:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        data-cy="input-name" 
-                    />
-                    {errors.name && <p className='error'>{errors.name}</p>}
-                </div>
-                <div>
-                    <label>Soyadınız:</label>
-                    <input
-                        type="text"
-                        name="surname"
-                        value={formData.surname}
-                        onChange={handleChange}
-                        required
-                        data-cy="input-surname" 
-                    />
-                    {errors.surname && <p className='error'>{errors.surname}</p>}
-                </div>
-                <div>
-                    <label>E-mail:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        data-cy="input-email"
-                    />
-                    {errors.email && <p className='error'>{errors.email}</p>}
-                </div>
-                <div>
-                    <label>Parola:</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        minLength="5"
-                        required
-                        data-cy="input-password" 
-                    />
-                    {errors.password && <p className='error'>{errors.password}</p>}
-                </div>
-                <div>
-                    <label>Telefon Numarası:</label>
-                    <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                        required
-                        data-cy="input-phone" 
-                    />
-                    {errors.phone && <p className='error'>{errors.phone}</p>}
-                </div>
-                <div>
-                    <label>Cinsiyetinizi Seçiniz:</label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="gender"
-                            value="Female"
-                            checked={formData.gender === 'Female'}
-                            onChange={handleChange}
-                            data-cy="radio-gender-female" 
-                        />
-                        Kadın
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="gender"
-                            value="Male"
-                            checked={formData.gender === 'Male'}
-                            onChange={handleChange}
-                            data-cy="radio-gender-male" 
-                        />
-                        Erkek
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="gender"
-                            value="Other"
-                            checked={formData.gender === 'Other'}
-                            onChange={handleChange}
-                            data-cy="radio-gender-other"  
-                        />
-                        Belirtmek İstemiyorum
-                    </label>
-                    {errors.gender && <p className='error'>{errors.gender}</p>}
-                </div>
-                <div>
-                    <label>Mesajınız:</label>
-                    <textarea
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        rows="5"
-                        cols="33"
-                        data-cy="textarea-message" 
-                    />
-                </div>
-                <div>
-                    <div className='checkbox'>
-                        <input
-                            type="checkbox"
-                            name="confirmation"
-                            checked={formData.confirmation}
-                            onChange={handleChange}
-                            data-cy="checkbox-confirmation"  
-                        />
-                        <label>Girdiğim bilgilerin doğruluğunu onaylıyorum.</label>
-                    </div>
-                    {errors.confirmation && <p className='error'>{errors.confirmation}</p>}
-                </div>
-                <button type="submit" disabled={!isValidForm} data-cy="submit-button">Giriş</button>  {/* data-cy ekledik */}
-            </fieldset>
-        </form>
-    </>
-    
-    );
+      <FormGroup>
+        <Label for="password">Parola:</Label>
+        <Input
+          type="password"
+          name="password"
+          id="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          minLength="5"
+          invalid={!!errors.password}
+        />
+        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+      </FormGroup>
+
+      <FormGroup>
+        <Label for="phone">Telefon Numarası:</Label>
+        <Input
+          type="tel"
+          name="phone"
+          id="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          placeholder='555-555-5555'
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          required
+          invalid={!!errors.phone}
+        />
+        {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
+      </FormGroup>
+
+      <FormGroup>
+        <Label>Cinsiyetinizi Seçiniz:</Label>
+        <div className='gender'>
+          <Label check>
+            <Input
+              type="radio"
+              name="gender"
+              value="Female"
+              checked={formData.gender === 'Female'}
+              onChange={handleChange}
+            />
+            Kadın
+          </Label>
+          <Label check>
+            <Input
+              type="radio"
+              name="gender"
+              value="Male"
+              checked={formData.gender === 'Male'}
+              onChange={handleChange}
+            />
+            Erkek
+          </Label>
+          <Label check>
+            <Input
+              type="radio"
+              name="gender"
+              value="Other"
+              checked={formData.gender === 'Other'}
+              onChange={handleChange}
+            />
+            Belirtmek İstemiyorum
+          </Label>
+        </div>
+        {errors.gender && <div className="invalid-feedback">{errors.gender}</div>}
+      </FormGroup>
+
+      <FormGroup>
+        <Label for="message">Mesajınız:</Label>
+        <Input
+          type="textarea"
+          name="message"
+          id="message"
+          value={formData.message}
+          onChange={handleChange}
+        />
+      </FormGroup>
+
+      <FormGroup check>
+        <Label check>
+          <Input
+            type="checkbox"
+            name="confirmation"
+            checked={formData.confirmation}
+            onChange={handleChange}
+          />
+          Girdiğim bilgilerin doğruluğunu onaylıyorum.
+        </Label>
+        {errors.confirmation && <div className="invalid-feedback">{errors.confirmation}</div>}
+      </FormGroup>
+
+      <button type="submit"  disabled={!isValidForm}>
+        KAYIT OL
+      </button>
+    </Form>
+  );
 }
