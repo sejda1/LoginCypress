@@ -216,7 +216,7 @@ export default function LoginForm() {
         {errors.confirmation && <div className="invalid-feedback">{errors.confirmation}</div>}
       </FormGroup>
 
-      <button type="submit"  disabled={!isValidForm}>
+      <button className='buton' type="submit"  disabled={!isValidForm}>
         KAYIT OL
       </button>
     </Form>

@@ -5,7 +5,7 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f9; /* Soluk gri arka plan */
     margin: 0;
-    padding: 0;
+    padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,7 +13,7 @@ body {
 h1{
     font-family: "Sofia", sans-serif;
     text-align: center;
-    color:#3a4c59;
+    color:#24313b;
 }
 Label {
     font-family: "Sofia", sans-serif;  
@@ -22,9 +22,10 @@ Label {
     border: 1px solid #3a4c59;
     padding: 0.5rem;
     border-radius: 10px;
+
 }
 /* Buton Stili */
-button {
+.buton {
     background: linear-gradient(145deg, #6e7f8c, #3a4c59); /* Gradient arka plan */
     color: black; /* Yazı rengi siyah */
     font-size: 1rem; /* Font boyutu */
@@ -37,20 +38,21 @@ button {
     text-transform: uppercase; /* Metin büyük harflerle */
     font-weight: bold; /* Kalın yazı tipi */
     outline: none; /* Odak efekti yok */
-    width: 100%;
     font-family: "Sofia", sans-serif;  
+    width: 100%;
+    margin: 1rem auto;
 }
 
 /* Hover Efekti */
-button:hover {
+.buton:hover {
     background: linear-gradient(145deg, #3a4c59, #6e7f8c); /* Hover sırasında renk değişimi */
     transform: translateY(-5px); /* Yüksekliğe doğru hareket */
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Hover'da daha belirgin gölge */
 }
 
 /* Buton Disable Durumu */
-button:disabled {
-    background: #b0b0b0; /* Disable olduğunda gri ton */
+.buton:disabled {
+    background:#6e7f8c; /* Disable olduğunda gri ton */
     cursor: not-allowed; /* Tıklanamaz */
     box-shadow: none; /* Disable olduğunda gölgeyi kaldır */
 }
