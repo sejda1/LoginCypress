@@ -80,7 +80,7 @@ export default function LoginForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
-    <h1>KAYIT FORMU</h1>
+    <h1>ZİYARETÇİ KAYIT FORMU</h1>
       <FormGroup>
         <Label for="name">Adınız:</Label>
         <Input
