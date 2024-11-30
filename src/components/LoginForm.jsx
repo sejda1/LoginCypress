@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { Form, FormGroup, Label, Input} from 'reactstrap';
+import { Form, FormGroup, Label, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 const initialData = {
   name: '',
@@ -21,7 +20,6 @@ export default function LoginForm() {
   const [isValidForm, setIsValidForm] = useState(false);
   const navigate = useNavigate();
 
-  // Handle form data changes
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
     setFormData({
@@ -30,7 +28,6 @@ export default function LoginForm() {
     });
   };
 
-  // Validate form data
   const ValidateForm = () => {
     const validationErrors = {};
 
@@ -61,7 +58,6 @@ export default function LoginForm() {
     setIsValidForm(Object.keys(validationErrors).length === 0);
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -73,14 +69,13 @@ export default function LoginForm() {
     }
   };
 
-  // Validate form whenever formData changes
   useEffect(() => {
     ValidateForm();
   }, [formData]);
 
   return (
-    <Form onSubmit={handleSubmit}>
-    <h1>ZİYARETÇİ KAYIT FORMU</h1>
+    <Form onSubmit={handleSubmit} data-cy="login-form">
+      <h1 data-cy="form-header">ZİYARETÇİ KAYIT FORMU</h1>
       <FormGroup>
         <Label for="name">Adınız:</Label>
         <Input
@@ -91,8 +86,9 @@ export default function LoginForm() {
           onChange={handleChange}
           required
           invalid={!!errors.name}
+          data-cy="input-name"
         />
-        {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+        {errors.name && <div className="invalid-feedback" data-cy="error-name">{errors.name}</div>}
       </FormGroup>
 
       <FormGroup>
@@ -105,8 +101,9 @@ export default function LoginForm() {
           onChange={handleChange}
           required
           invalid={!!errors.surname}
+          data-cy="input-surname"
         />
-        {errors.surname && <div className="invalid-feedback">{errors.surname}</div>}
+        {errors.surname && <div className="invalid-feedback" data-cy="error-surname">{errors.surname}</div>}
       </FormGroup>
 
       <FormGroup>
@@ -117,11 +114,12 @@ export default function LoginForm() {
           id="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder='test@example.com'
+          placeholder="test@example.com"
           required
           invalid={!!errors.email}
+          data-cy="input-email"
         />
-        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+        {errors.email && <div className="invalid-feedback" data-cy="error-email">{errors.email}</div>}
       </FormGroup>
 
       <FormGroup>
@@ -135,8 +133,9 @@ export default function LoginForm() {
           required
           minLength="5"
           invalid={!!errors.password}
+          data-cy="input-password"
         />
-        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+        {errors.password && <div className="invalid-feedback" data-cy="error-password">{errors.password}</div>}
       </FormGroup>
 
       <FormGroup>
@@ -147,17 +146,18 @@ export default function LoginForm() {
           id="phone"
           value={formData.phone}
           onChange={handleChange}
-          placeholder='555-555-5555'
+          placeholder="555-555-5555"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           required
           invalid={!!errors.phone}
+          data-cy="input-phone"
         />
-        {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
+        {errors.phone && <div className="invalid-feedback" data-cy="error-phone">{errors.phone}</div>}
       </FormGroup>
 
       <FormGroup>
         <Label>Cinsiyetinizi Seçiniz:</Label>
-        <div className='gender'>
+        <div className="gender">
           <Label check>
             <Input
               type="radio"
@@ -165,6 +165,7 @@ export default function LoginForm() {
               value="Female"
               checked={formData.gender === 'Female'}
               onChange={handleChange}
+              data-cy="input-gender-female"
             />
             Kadın
           </Label>
@@ -175,6 +176,7 @@ export default function LoginForm() {
               value="Male"
               checked={formData.gender === 'Male'}
               onChange={handleChange}
+              data-cy="input-gender-male"
             />
             Erkek
           </Label>
@@ -185,11 +187,12 @@ export default function LoginForm() {
               value="Other"
               checked={formData.gender === 'Other'}
               onChange={handleChange}
+              data-cy="input-gender-other"
             />
             Belirtmek İstemiyorum
           </Label>
         </div>
-        {errors.gender && <div className="invalid-feedback">{errors.gender}</div>}
+        {errors.gender && <div className="invalid-feedback" data-cy="error-gender">{errors.gender}</div>}
       </FormGroup>
 
       <FormGroup>
@@ -200,6 +203,7 @@ export default function LoginForm() {
           id="message"
           value={formData.message}
           onChange={handleChange}
+          data-cy="input-message"
         />
       </FormGroup>
 
@@ -210,13 +214,14 @@ export default function LoginForm() {
             name="confirmation"
             checked={formData.confirmation}
             onChange={handleChange}
+            data-cy="input-confirmation"
           />
           Girdiğim bilgilerin doğruluğunu onaylıyorum.
         </Label>
-        {errors.confirmation && <div className="invalid-feedback">{errors.confirmation}</div>}
+        {errors.confirmation && <div className="invalid-feedback" data-cy="error-confirmation">{errors.confirmation}</div>}
       </FormGroup>
 
-      <button className='buton' type="submit"  disabled={!isValidForm}>
+      <button className="buton" type="submit" disabled={!isValidForm} data-cy="submit-button">
         KAYIT OL
       </button>
     </Form>
